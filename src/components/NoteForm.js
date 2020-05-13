@@ -10,7 +10,6 @@ const NoteForm = ({ onSubmit, initialFormValues }) => {
     const [title, setTitle] = useState(initialFormValues.title);
     const [content, setContent] = useState(initialFormValues.content);
     const [titleFocused, setTitleFocused] = useState(false);
-    const { addNote } = useContext(Context);
     const verb = initialFormValues.title ? 'Update' : 'Add';
 
     return (
