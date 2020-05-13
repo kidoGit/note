@@ -11,9 +11,9 @@ const EditScreen = ({ navigation }) => {
     const note = state.find((note) => note.id === id)
 
     return <NoteForm
-                initialFormValues={{ title: note.title, content: note.content }}
-                onSubmit={(title, content) => {
-                    editNote(id, title, content, () => {
+                initialFormValues={{ title: note.title, content: note.content, color: note.color }}
+                onSubmit={(title, content, color) => {
+                    editNote(id, title, content, color, () => {
                         // navigation.navigate('Show', { id })
                         navigation.pop();
                     });
