@@ -7,7 +7,7 @@ const CreateScreen = ({ navigation }) => {
     const { addNote } = useContext(Context);
 
     return <NoteForm
-                initialFormValues={{ title: '', content: '' }}
+                initialFormValues={{ title: '', content: '', color: '' }}
                 onSubmit={(title, content) =>
                 {
                     addNote(title, content, () => {

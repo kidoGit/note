@@ -1,14 +1,40 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { FontAwesome, Feather } from '@expo/vector-icons';
 import { Context } from '../context/NoteContext';
 import { withNavigation } from 'react-navigation';
 
-// const COLORS = ['#facaca', '#cadefa', '#f9faca', '#cafae6', '#fadfca'];
-
 const IndexScreen = ({ navigation }) => {
-    const { state, deleteNote } = useContext(Context);
-    const randomColorIndex = Math.floor(Math.random() * 5);
+    const { state, deleteNote, getNotes } = useContext(Context);
+
+    useEffect(() => {
+        getNotes();
+
+        const listener = navigation.addListener('didFocus', () => {
+            getNotes();
+        });
+
+        // invoked when screen is truly completely removed from screen
+        return () => {
+            listener.remove();
+        };
+    }, [])
+
+    const createTwoButtonAlert = (id) =>
+        Alert.alert(
+            '',
+            "Are you sure you want to delete this note?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "OK", onPress: () => deleteNote(id) }
+            ],
+            { cancelable: false }
+        );
+
     return (
         <>
             <FlatList
@@ -18,28 +44,16 @@ const IndexScreen = ({ navigation }) => {
                 renderItem={({ item }) => {
                     return (
                         <TouchableOpacity
-                            style={styles.row}
+                            style={{ ...styles.row, backgroundColor: item.color, borderColor: item.color }}
                             onPress={() => navigation.navigate('Show', { id: item.id })}>
-                                <View style={{ width: '80%' }}>
-                                    <Text style={styles.title}>{item.title}</Text>
-                                    <Text style={styles.content}>{item.content}</Text>
-                                </View>
-                                <TouchableOpacity onPress={() => deleteNote(item.id)}>
-                                    <FontAwesome name="trash" style={styles.icon} />
-                                </TouchableOpacity>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.title}>{item.title}</Text>
+                                <Text style={styles.content}>{item.content}</Text>
+                            </View>
+                            <TouchableOpacity onPress={() => createTwoButtonAlert(item.id)}>
+                                <FontAwesome name="trash" style={styles.icon} />
+                            </TouchableOpacity>
                         </TouchableOpacity>
-                        // <>
-                        //     { item.index % 2 !== 0
-                        //         ? <View style={{...styles.row, marginRight: 16, marginLeft: 5}}>
-                        //             <Text style={styles.title}>{item.title}</Text>
-                        //             <FontAwesome name="trash" style={styles.icon} />
-                        //         </View>
-                        //         : <View style={{...styles.row, marginLeft: 16, marginRight: 5}}>
-                        //             <Text style={styles.title}>{item.title}</Text>
-                        //             <FontAwesome name="trash" style={styles.icon} />
-                        //         </View>
-                        //     }
-                        // </>
                     );
                 }}
             />
@@ -62,14 +76,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderWidth: 1,
-        // flex: 1,
         flexWrap: 'wrap',
         margin: 4,
-        backgroundColor: '#cadefa',
         borderRadius: 7,
         height: 200,
-        borderColor: '#cadefa',
-        width: '48%',
+        width: '48%'
 
     },
     title: {
@@ -77,14 +88,13 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginTop: 10,
         color: '#000000',
-        // width: '80%',
-        height: 30
     },
     content: {
         fontSize: 16,
         marginLeft: 5,
         color: '#4d4d4d',
-        height: '75%'
+        height: '60%',
+        flex: 1
     },
     icon: {
         fontSize: 24,

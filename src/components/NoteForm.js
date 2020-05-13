@@ -6,10 +6,10 @@ const BLUE = '#428AF8';
 const GRAY = '#D3D3D3';
 
 const NoteForm = ({ onSubmit, initialFormValues }) => {
+    const color = initialFormValues.color;
     const [title, setTitle] = useState(initialFormValues.title);
     const [content, setContent] = useState(initialFormValues.content);
     const [titleFocused, setTitleFocused] = useState(false);
-    const { addNote } = useContext(Context);
     const verb = initialFormValues.title ? 'Update' : 'Add';
 
     return (
@@ -35,7 +35,7 @@ const NoteForm = ({ onSubmit, initialFormValues }) => {
                     style={styles.contentInput}
                 />
             </View>
-            <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => onSubmit(title, content)}>
+            <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => onSubmit(title, content, color)}>
                 <Text style={styles.buttonStyle}>{verb} Note</Text>
             </TouchableOpacity>
 

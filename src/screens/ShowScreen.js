@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Context } from '../context/NoteContext';
 import { FontAwesome } from '@expo/vector-icons';
 import { withNavigation } from 'react-navigation';
@@ -13,7 +13,9 @@ const ShowScreen = ({ navigation }) => {
     return (
         <>
             <Text style={styles.title}>{note.title}</Text>
-            <Text>{note.content}</Text>
+            <ScrollView>
+                <Text style={{ ...styles.contentContainer, backgroundColor: note.color }}>{note.content}</Text>
+            </ScrollView>
         </>
     );
 };
@@ -30,11 +32,25 @@ ShowScreen.navigationOptions = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     title: {
-        height: 60,
+        height: 65,
         paddingLeft: 6,
         fontSize: 22,
         marginBottom: 10,
-        marginHorizontal: 5,
+        margin: 10,
+        padding: 5,
+        textAlign: 'center',
+        textAlignVertical: "top",
+        backgroundColor: '#ffffff',
+        borderRadius: 5
+    },
+    contentContainer: {
+        flex: 1,
+        marginHorizontal: 10,
+        margin: 10,
+        padding: 5,
+        textAlignVertical: "top",
+        fontSize: 18,
+        borderRadius: 5
     }
 });
 
