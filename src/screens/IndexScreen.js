@@ -4,9 +4,11 @@ import { FontAwesome, Feather } from '@expo/vector-icons';
 import { Context } from '../context/NoteContext';
 import { withNavigation } from 'react-navigation';
 
+// const COLORS = ['#facaca', '#cadefa', '#f9faca', '#cafae6', '#fadfca'];
+
 const IndexScreen = ({ navigation }) => {
     const { state, deleteNote } = useContext(Context);
-
+    const randomColorIndex = Math.floor(Math.random() * 5);
     return (
         <>
             <FlatList
@@ -15,7 +17,9 @@ const IndexScreen = ({ navigation }) => {
                 keyExtractor={(note) => note.title}
                 renderItem={({ item }) => {
                     return (
-                        <TouchableOpacity style={styles.row} onPress={() => navigation.navigate('Show', { item })}>
+                        <TouchableOpacity
+                            style={styles.row}
+                            onPress={() => navigation.navigate('Show', { id: item.id })}>
                                 <View style={{ width: '80%' }}>
                                     <Text style={styles.title}>{item.title}</Text>
                                     <Text style={styles.content}>{item.content}</Text>
@@ -61,10 +65,10 @@ const styles = StyleSheet.create({
         // flex: 1,
         flexWrap: 'wrap',
         margin: 4,
-        backgroundColor: '#dbd9d9',
+        backgroundColor: '#cadefa',
         borderRadius: 7,
         height: 200,
-        borderColor: '#dbd9d9',
+        borderColor: '#cadefa',
         width: '48%',
 
     },
